@@ -1,104 +1,88 @@
 import streamlit as st
-import time
-from backend_ia import app_ia  # Importa nossa IA criada no outro arquivo
+import random
 
-# --- CONFIGURAÇÃO UX/UI (Design System) ---
-st.set_page_config(
-    page_title="GiftGenie AI",
-    page_icon="🎁",
-    layout="centered"
-)
+# --- 1. O "CÉREBRO" DO SISTEMA (DADOS) ---
+# Aqui criamos um "banco de dados" simples com opções de presentes
+banco_de_presentes = {
+    "esporte": [
+        {"item": "Garrafa Térmica Inox", "preco": 45, "desc": "Ideal para hidratação no treino."},
+        {"item": "Faixa Elástica de Resistência", "preco": 30, "desc": "Ótimo para treinar em casa."},
+        {"item": "Luva de Academia", "preco": 55, "desc": "Proteção e conforto."},
+        {"item": "Camiseta Dry Fit", "preco": 49, "desc": "Tecido leve para suar à vontade."}
+    ],
+    "geek": [
+        {"item": "Funko Pop (Sortido)", "preco": 80, "desc": "Colecionável clássico."},
+        {"item": "Caneca Temática Star Wars", "preco": 40, "desc": "Para o café do lado sombrio."},
+        {"item": "Mousepad Gamer Grande", "preco": 60, "desc": "Melhora a precisão no jogo."},
+        {"item": "Luminária Pixel", "preco": 45, "desc": "Decoração retrô."}
+    ],
+    "fashion": [
+        {"item": "Óculos de Sol Estiloso", "preco": 50, "desc": "Proteção com estilo."},
+        {"item": "Kit de Anéis Minimalistas", "preco": 35, "desc": "Acessório versátil."},
+        {"item": "Carteira Slim", "preco": 45, "desc": "Prática e cabe no bolso."},
+        {"item": "Lenço/Echarpe", "preco": 40, "desc": "Toque de elegância."}
+    ],
+    "minimalista": [
+        {"item": "Vela Aromática", "preco": 35, "desc": "Deixa o ambiente aconchegante."},
+        {"item": "Caderno de Anotações Preto", "preco": 25, "desc": "Simples e funcional."},
+        {"item": "Vaso de Suculenta (Artificial)", "preco": 30, "desc": "Verde sem trabalho."},
+        {"item": "Organizador de Mesa", "preco": 48, "desc": "Mantenha tudo no lugar."}
+    ]
+}
 
-# CSS Customizado para forçar as cores de vendas (Laranja e Azul)
-st.markdown("""
-    <style>
-    .stButton>button {
-        background-color: #FF6F00; /* Laranja Vendas */
-        color: white;
-        font-size: 18px;
-        border-radius: 10px;
-        border: none;
-        padding: 10px 24px;
-        width: 100%;
-    }
-    .stButton>button:hover {
-        background-color: #E65100;
-        color: white;
-    }
-    .success-box {
-        padding: 20px;
-        background-color: #E8F5E9;
-        border-left: 5px solid #2E7D32;
-        border-radius: 5px;
-    }
-    h1 { color: #0E1117; }
-    </style>
-    """, unsafe_allow_html=True)
+# --- 2. A FUNÇÃO DE LÓGICA ---
+def sugerir_presente(vibe_escolhida, orcamento_maximo):
+    # Pega a lista da vibe escolhida
+    lista_da_vibe = banco_de_presentes.get(vibe_escolhida, [])
+    
+    # Filtra: Só deixa passar o que cabe no orçamento
+    opcoes_validas = []
+    for presente in lista_da_vibe:
+        if presente["preco"] <= orcamento_maximo:
+            opcoes_validas.append(presente)
+    
+    # Se não sobrar nada (dinheiro curto), retorna mensagem de erro
+    if not opcoes_validas:
+        return None
+    
+    # Escolhe um aleatório entre os que sobraram para parecer "inteligente"
+    return random.choice(opcoes_validas)
 
-# --- CABEÇALHO ---
+# --- 3. A INTERFACE (STREAMLIT) ---
+st.set_page_config(page_title="GiftGenie AI", page_icon="🎁")
+
 st.title("🎁 GiftGenie AI")
-st.markdown("### O Assistente de Compras que *pensa* antes de sugerir.")
-st.markdown("---")
+st.subheader("O Assistente de Compras que _pensa_ antes de sugerir.")
+st.divider()
 
-# --- ÁREA DO USUÁRIO (Input) ---
+# Colunas
 col1, col2 = st.columns(2)
-
 with col1:
-    perfil = st.selectbox(
-        "Quem vai receber o presente?",
-        ["Namorado(a)", "Mãe/Pai", "Amigo Geek", "Chefe", "Para mim mesmo"]
-    )
-    interesse = st.selectbox(
-        "Qual a 'vibe' da pessoa?",
-        ["tecnologia", "gastronomia", "leitura", "esporte", "moda"]
-    )
-
+    destinatario = st.selectbox("Quem vai receber?", ["Namorado(a)", "Mãe", "Pai", "Amigo"])
 with col2:
-    orcamento = st.number_input("Qual seu orçamento máximo (R$)?", min_value=50, value=1000, step=50)
+    # Step=5 faz pular de 5 em 5 reais
+    orcamento = st.number_input("Orçamento máximo (R$)", min_value=10, value=50, step=5)
 
-# --- BOTÃO DE AÇÃO (O Gatilho) ---
-st.write("") # Espaçamento
-if st.button("ENCONTRAR PRESENTE PERFEITO 🚀"):
-    
-    # UX: Feedback visual de carregamento
-    with st.status("🤖 O Agente está trabalhando...", expanded=True) as status:
-        st.write("🔍 Pesquisando tendências de mercado...")
-        time.sleep(1)
-        st.write("💰 Negociando melhores preços...")
-        time.sleep(0.5)
-        st.write("🧠 O Crítico de Vendas está revisando a qualidade...")
-        
-        # --- CHAMA A NOSSA IA (LangGraph) ---
-        inputs = {
-            "perfil_cliente": perfil,
-            "orcamento": orcamento,
-            "interesse": interesse,
-            "sugestao_atual": {},
-            "tentativas": 0,
-            "status": "inicio"
-        }
-        
-        # Executa o grafo
-        resultado = app_ia.invoke(inputs)
-        status.update(label="Presente Encontrado!", state="complete", expanded=False)
+vibe = st.selectbox("Qual a 'vibe' da pessoa?", ["esporte", "geek", "fashion", "minimalista"])
 
-    # --- RESULTADO (A Conversão) ---
-    produto_final = resultado['sugestao_atual']
-    
-    st.balloons() # Efeito visual de celebração (Dopamina)
-    
-    st.markdown(f"""
-    <div class="success-box">
-        <h3>🎯 Recomendação Final: {produto_final['nome']}</h3>
-        <p>Baseado no perfil <b>{interesse}</b> e no orçamento de <b>R$ {orcamento}</b>.</p>
-        <h2>R$ {produto_final['preco']},00</h2>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # CTA Final
-    st.write("")
-    st.button(f"🛒 COMPRAR {produto_final['nome'].upper()} AGORA")
+# Espaço visual
+st.write("") 
 
-# --- RODAPÉ (Social Proof) ---
+# Botão de Ação
+if st.button("ENCONTRAR PRESENTE PERFEITO 🚀", type="primary"):
+    
+    # Chama nossa função inteligente
+    resultado = sugerir_presente(vibe, orcamento)
+    
+    st.divider()
+    
+    if resultado:
+        st.success("✨ Presente Encontrado!")
+        st.metric(label="Sugestão", value=resultado["item"], delta=f"R$ {resultado['preco']}")
+        st.info(f"💡 Por que?: {resultado['desc']}")
+    else:
+        st.error(f"Poxa! Não encontrei nada da vibe '{vibe}' por menos de R$ {orcamento}. Tente aumentar um pouquinho!")
+
+# Rodapé
 st.markdown("---")
-st.caption("🔒 Desenvolvido com Python, LangGraph e UX Design Estratégico.")
+st.caption("🔒 Desenvolvido com Python e Lógica Estratégica.")
