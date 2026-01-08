@@ -1,5 +1,7 @@
 import streamlit as st
 import random
+from typing import TypedDict, List
+from langgraph.graph import StateGraph, END
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered")
@@ -7,13 +9,7 @@ st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered
 # --- ESTILIZAÇÃO AVANÇADA (CSS) ---
 st.markdown("""
 <style>
-    /* 1. Fundo Geral e Fontes */
-    .stApp {
-        background-color: #0E1117;
-        font-family: 'Helvetica Neue', sans-serif;
-    }
-    
-    /* 2. Título com Gradiente (Efeito Dourado/Laranja) */
+    .stApp { background-color: #0E1117; font-family: 'Helvetica Neue', sans-serif; }
     h1 {
         background: -webkit-linear-gradient(45deg, #F39C12, #FFD700);
         -webkit-background-clip: text;
@@ -23,133 +19,126 @@ st.markdown("""
         text-align: center;
         padding-bottom: 20px;
     }
-    
-    /* 3. Subtítulo centralizado */
-    .css-10trblm {
-        text-align: center;
-        color: #B0B0B0;
-    }
-    
-    /* 4. Estilo dos Cards (Caixas dos Inputs) */
-    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > div[data-testid="stVerticalBlock"] {
-        background-color: #1E1E1E;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        border: 1px solid #333;
-    }
-
-    /* 5. Botão Laranja "Neon" */
     div.stButton > button {
         width: 100%;
         background: linear-gradient(90deg, #F39C12 0%, #D35400 100%);
-        color: white;
-        font-weight: bold;
-        border: none;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 18px;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0px 4px 15px rgba(243, 156, 18, 0.4);
+        color: white; border: none; padding: 15px 32px;
+        font-size: 18px; border-radius: 12px; transition: all 0.3s ease;
     }
     div.stButton > button:hover {
-        background: linear-gradient(90deg, #D35400 0%, #F39C12 100%);
-        transform: translateY(-2px);
-        box-shadow: 0px 6px 20px rgba(243, 156, 18, 0.6);
-        color: white;
+        transform: translateY(-2px); box-shadow: 0px 6px 20px rgba(243, 156, 18, 0.6); color: white;
     }
-
-    /* 6. Card de Resultado */
     .result-card {
-        background-color: #262730;
-        border-left: 5px solid #F39C12;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
+        background-color: #1E1E1E; border-left: 5px solid #F39C12;
+        padding: 20px; border-radius: 10px; margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 </style>
 """, unsafe_allow_html=True)
 
-# --- DADOS (LÓGICA) ---
+# --- DADOS (O CONHECIMENTO DO AGENTE) ---
 banco_de_presentes = {
     "esporte": [
-        {"item": "Garrafa Térmica Premium", "preco": 45, "desc": "Design ergonômico e mantém a temperatura por 12h."},
-        {"item": "Kit Faixas de Resistência", "preco": 30, "desc": "Treino completo em qualquer lugar."},
-        {"item": "Luva de Academia Pro", "preco": 55, "desc": "Aderência e proteção reforçada."},
-        {"item": "Camiseta Tech Dry", "preco": 49, "desc": "Tecnologia anti-suor e secagem rápida."}
+        {"item": "Garrafa Térmica Premium", "preco": 45, "desc": "Hidratação com tecnologia térmica."},
+        {"item": "Kit Elásticos Extensores", "preco": 30, "desc": "Academia completa em casa."},
+        {"item": "Luva de Treino Pro", "preco": 55, "desc": "Proteção para cargas altas."}
     ],
     "geek": [
-        {"item": "Funko Pop (Edição Limitada)", "preco": 80, "desc": "Item essencial para colecionadores."},
-        {"item": "Caneca Star Wars 3D", "preco": 40, "desc": "Detalhes realistas da saga."},
-        {"item": "Mousepad Gamer Speed", "preco": 60, "desc": "Superfície otimizada para precisão."},
-        {"item": "Luminária Pixel Art", "preco": 45, "desc": "Iluminação ambiente retrô."}
+        {"item": "Funko Pop (Edição Especial)", "preco": 80, "desc": "Item de colecionador raro."},
+        {"item": "Caneca 3D Star Wars", "preco": 40, "desc": "Detalhes fieis da saga."},
+        {"item": "Luminária Pixel LED", "preco": 45, "desc": "Decoração gamer retrô."}
     ],
     "fashion": [
-        {"item": "Óculos de Sol UV400", "preco": 50, "desc": "Design moderno com proteção total."},
-        {"item": "Mix de Anéis Prata", "preco": 35, "desc": "Acabamento refinado e minimalista."},
-        {"item": "Carteira Slim Couro", "preco": 45, "desc": "Discreta, elegante e funcional."},
-        {"item": "Lenço de Seda Sintética", "preco": 40, "desc": "Toque suave para elevar o look."}
+        {"item": "Óculos Retro UV400", "preco": 50, "desc": "Estilo vintage com proteção."},
+        {"item": "Pulseira Couro Minimalista", "preco": 35, "desc": "Acessório coringa."}
     ],
     "minimalista": [
-        {"item": "Vela Aromática Bamboo", "preco": 35, "desc": "Fragrância suave e relaxante."},
-        {"item": "Moleskine Capa Dura", "preco": 25, "desc": "Para ideias brilhantes."},
-        {"item": "Vaso Geométrico + Suculenta", "preco": 30, "desc": "Decoração viva sem manutenção."},
-        {"item": "Organizador de Mesa Acrílico", "preco": 48, "desc": "Clean e funcional."}
+        {"item": "Vela Aromática Bamboo", "preco": 35, "desc": "Relaxamento e aroma suave."},
+        {"item": "Planner Executivo", "preco": 25, "desc": "Organização com elegância."}
     ]
 }
 
-def sugerir_presente(vibe_escolhida, orcamento_maximo):
-    lista_da_vibe = banco_de_presentes.get(vibe_escolhida, [])
-    opcoes_validas = [p for p in lista_da_vibe if p["preco"] <= orcamento_maximo]
-    return random.choice(opcoes_validas) if opcoes_validas else None
+# --- ENGINE DE IA (LANGGRAPH) ---
+# Aqui começa a mágica que diferencia seu projeto de um script comum.
+
+# 1. Definindo o Estado (A memória do robô durante o processo)
+class AgentState(TypedDict):
+    vibe: str
+    orcamento: float
+    opcoes_encontradas: List[dict]
+    decisao_final: dict
+
+# 2. Nó 1: Agente de Pesquisa (Simula a busca no banco de dados)
+def pesquisar_presentes(state: AgentState):
+    # O agente "olha" para o estado (vibe) e busca dados
+    vibe = state['vibe']
+    # Simulação de busca inteligente
+    resultados = banco_de_presentes.get(vibe, [])
+    return {"opcoes_encontradas": resultados}
+
+# 3. Nó 2: Agente Financeiro (Filtra pelo orçamento)
+def filtrar_por_orcamento(state: AgentState):
+    opcoes = state['opcoes_encontradas']
+    orcamento = state['orcamento']
+    # Lógica de filtragem
+    validos = [p for p in opcoes if p['preco'] <= orcamento]
+    # Se tiver opções, escolhe a melhor (random mockado), senão retorna vazio
+    escolha = random.choice(validos) if validos else None
+    return {"decisao_final": escolha}
+
+# 4. Construindo o Grafo (O Fluxo de Trabalho)
+workflow = StateGraph(AgentState)
+
+# Adicionando os nós
+workflow.add_node("pesquisador", pesquisar_presentes)
+workflow.add_node("financeiro", filtrar_por_orcamento)
+
+# Definindo as conexões (Arestas)
+workflow.set_entry_point("pesquisador") # Começa aqui
+workflow.add_edge("pesquisador", "financeiro") # Depois vai pra cá
+workflow.add_edge("financeiro", END) # Fim
+
+# Compilando o cérebro
+app_ia = workflow.compile()
 
 # --- INTERFACE VISUAL ---
-
 st.markdown("<h1>GiftGenie AI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #aaa; font-size: 1.1rem; margin-bottom: 30px;'>O Consultor de Compras Inteligente.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 
-# Container principal (Cria uma "caixa" visual ao redor dos inputs)
 with st.container():
     col1, col2 = st.columns(2)
-    
     with col1:
-        destinatario = st.selectbox("🎯 Quem vai receber?", ["Namorado(a)", "Mãe", "Pai", "Amigo", "Chefe"])
-    
+        destinatario = st.selectbox("🎯 Destinatário", ["Namorado(a)", "Mãe", "Pai", "Amigo"])
     with col2:
-        orcamento = st.number_input("💰 Orçamento Máximo (R$)", min_value=10, value=50, step=5)
-    
-    vibe = st.selectbox("✨ Qual a 'vibe' da pessoa?", ["esporte", "geek", "fashion", "minimalista"])
+        orcamento = st.number_input("💰 Orçamento (R$)", min_value=10, value=50, step=5)
+    vibe = st.selectbox("✨ Vibe Principal", ["esporte", "geek", "fashion", "minimalista"])
 
-st.write("") # Espaçamento
 st.write("") 
 
-if st.button("ENCONTRAR PRESENTE PERFEITO 🚀"):
+if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
     
-    with st.spinner("Analisando perfil e tendências..."):
-        import time
-        time.sleep(1.2) # Pequeno delay para dar a sensação de "processamento" da IA
-        resultado = sugerir_presente(vibe, orcamento)
+    with st.spinner("Iniciando workflow de agentes..."):
+        # Executando o LangGraph
+        inputs = {"vibe": vibe, "orcamento": orcamento}
+        resultado_estado = app_ia.invoke(inputs)
+        
+        presente = resultado_estado.get("decisao_final")
     
-    if resultado:
-        # Exibição do Resultado Customizada
+    if presente:
         st.markdown(f"""
         <div class="result-card">
             <h3 style="color: #F39C12; margin:0;">✨ Sugestão Encontrada!</h3>
-            <h2 style="color: white; margin: 10px 0;">{resultado['item']}</h2>
-            <p style="color: #ddd; font-style: italic;">"{resultado['desc']}"</p>
+            <h2 style="color: white; margin: 10px 0;">{presente['item']}</h2>
+            <p style="color: #ddd;">"{presente['desc']}"</p>
             <hr style="border-color: #444;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: #aaa;">Valor estimado:</span>
-                <span style="color: #2ecc71; font-weight: bold; font-size: 1.2rem;">R$ {resultado['preco']},00</span>
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: #aaa;">Preço:</span>
+                <span style="color: #2ecc71; font-weight: bold;">R$ {presente['preco']},00</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.error(f"⚠️ Nenhuma opção encontrada por menos de R$ {orcamento} na categoria '{vibe}'. Tente aumentar o orçamento!")
+        st.error(f"⚠️ Os agentes não encontraram produtos da vibe '{vibe}' abaixo de R$ {orcamento}.")
 
-# Rodapé minimalista
-st.markdown("<br><br><br>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #444; font-size: 0.8rem;'>🔒 Powered by Python & Streamlit • Design Estratégico</p>", unsafe_allow_html=True)
+# Rodapé
+st.markdown("<br><br><p style='text-align: center; color: #444; font-size: 0.8rem;'>Arquitetura: LangGraph StateMachine • Frontend: Streamlit</p>", unsafe_allow_html=True)
