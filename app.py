@@ -2,7 +2,6 @@ import streamlit as st
 import random
 from typing import TypedDict, List
 from langgraph.graph import StateGraph, END
-import time
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered")
@@ -18,7 +17,6 @@ st.markdown("""
         font-weight: 700 !important; font-size: 3rem !important;
         text-align: center; padding-bottom: 20px;
     }
-    /* Botão Principal */
     div.stButton > button {
         width: 100%; background: linear-gradient(90deg, #F39C12 0%, #D35400 100%);
         color: white; border: none; padding: 15px 32px;
@@ -28,17 +26,16 @@ st.markdown("""
     div.stButton > button:hover {
         transform: translateY(-2px); box-shadow: 0px 6px 20px rgba(243, 156, 18, 0.6); color: white;
     }
-    /* Card de Resultado */
     .result-card {
         background-color: #1E1E1E; border-left: 5px solid #F39C12;
         padding: 20px; border-radius: 10px; margin-top: 20px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    /* Cards das Lojas (Novidade) */
     .store-card {
         background-color: #262730; border: 1px solid #333;
         border-radius: 8px; padding: 15px; text-align: center;
         transition: transform 0.2s; margin-bottom: 10px;
+        height: 100%;
     }
     .store-card:hover { transform: scale(1.03); border-color: #F39C12; }
     .store-link {
@@ -70,7 +67,7 @@ banco_de_presentes = {
     ]
 }
 
-# Novo Banco de Lojas
+# Banco de Lojas
 banco_de_lojas = {
     "esporte": [
         {"nome": "Netshoes", "url": "https://www.netshoes.com.br", "desc": "Maior e-commerce esportivo"},
@@ -80,42 +77,34 @@ banco_de_lojas = {
     "geek": [
         {"nome": "Nerdstore", "url": "https://nerdstore.com.br", "desc": "A maior loja nerd do Brasil"},
         {"nome": "Piticas", "url": "https://www.piticas.com.br", "desc": "Camisetas e colecionáveis"},
-        {"nome": "Zona Criativa", "url": "https://www.zonacriativa.com.br", "desc": "Presentes divertidos"}
+        {"nome": "Amazon Geek", "url": "https://www.amazon.com.br/geek", "desc": "Presentes rápidos"}
     ],
     "fashion": [
         {"nome": "Zattini", "url": "https://www.zattini.com.br", "desc": "Moda e lifestyle"},
-        {"nome": "Dafiti", "url": "https://www.dafiti.com.br", "desc": "Marcas famosas e tendências"},
-        {"nome": "Amaro", "url": "https://amaro.com", "desc": "Moda digital e estilosa"}
+        {"nome": "Dafiti", "url": "https://www.dafiti.com.br", "desc": "Marcas famosas"},
+        {"nome": "Amaro", "url": "https://amaro.com", "desc": "Moda estilosa"}
     ],
     "minimalista": [
-        {"nome": "Tok&Stok", "url": "https://www.tokstok.com.br", "desc": "Design e decoração clean"},
+        {"nome": "Tok&Stok", "url": "https://www.tokstok.com.br", "desc": "Design clean"},
         {"nome": "Camicado", "url": "https://www.camicado.com.br", "desc": "Casa e organização"},
-        {"nome": "MinD", "url": "https://www.casamind.com.br", "desc": "Design original e presenteável"}
+        {"nome": "MinD", "url": "https://www.casamind.com.br", "desc": "Design original"}
     ]
 }
 
 # --- ENGINE DE IA (LANGGRAPH) ---
-
-# 1. Estado (Memória) Atualizada
 class AgentState(TypedDict):
     vibe: str
     orcamento: float
     opcoes_encontradas: List[dict]
     decisao_final: dict
-    lojas_recomendadas: List[dict] # Nova memória para guardar as lojas
-
-# 2. Nós (Agentes)
+    lojas_recomendadas: List[dict]
 
 def pesquisar_presentes(state: AgentState):
-    """Agente 1: Busca produtos no banco de dados"""
-    print("--- Agente Pesquisador Ativado ---")
     vibe = state['vibe']
     resultados = banco_de_presentes.get(vibe, [])
     return {"opcoes_encontradas": resultados}
 
 def filtrar_por_orcamento(state: AgentState):
-    """Agente 2: Filtra pelo preço"""
-    print("--- Agente Financeiro Ativado ---")
     opcoes = state['opcoes_encontradas']
     orcamento = state['orcamento']
     validos = [p for p in opcoes if p['preco'] <= orcamento]
@@ -123,25 +112,20 @@ def filtrar_por_orcamento(state: AgentState):
     return {"decisao_final": escolha}
 
 def recomendar_lojas(state: AgentState):
-    """Agente 3 (NOVO): Encontra onde comprar"""
-    print("--- Agente de Oportunidades Ativado ---")
     if state['decisao_final']:
         vibe = state['vibe']
-        # Busca as lojas daquela vibe
         lojas = banco_de_lojas.get(vibe, [])
         return {"lojas_recomendadas": lojas}
     return {"lojas_recomendadas": []}
 
-# 3. Construindo o Grafo
 workflow = StateGraph(AgentState)
-
 workflow.add_node("pesquisador", pesquisar_presentes)
 workflow.add_node("financeiro", filtrar_por_orcamento)
-workflow.add_node("loja_finder", recomendar_lojas) # Novo nó adicionado
+workflow.add_node("loja_finder", recomendar_lojas)
 
 workflow.set_entry_point("pesquisador")
 workflow.add_edge("pesquisador", "financeiro")
-workflow.add_edge("financeiro", "loja_finder") # Conecta o financeiro ao buscador de lojas
+workflow.add_edge("financeiro", "loja_finder")
 workflow.add_edge("loja_finder", END)
 
 app_ia = workflow.compile()
@@ -163,15 +147,14 @@ st.write("")
 if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
     
     with st.spinner("Iniciando workflow de agentes..."):
-        # Rodando o grafo
         inputs = {"vibe": vibe, "orcamento": orcamento}
         resultado_estado = app_ia.invoke(inputs)
         
         presente = resultado_estado.get("decisao_final")
-        lojas = resultado_estado.get("lojas_recomendadas")
+        # Correção aqui: Adicionei um valor padrão ([]) para evitar erro se vier vazio
+        lojas = resultado_estado.get("lojas_recomendadas", [])
     
     if presente:
-        # Exibe o presente
         st.markdown(f"""
         <div class="result-card">
             <h3 style="color: #F39C12; margin:0;">✨ Sugestão Encontrada!</h3>
@@ -184,5 +167,25 @@ if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
         </div>
         """, unsafe_allow_html=True)
 
-        # Exibe as lojas (Nova Seção)
-        st.markdown("<br><h4 style='text-align: center; color: #fff;'>🛒 Onde encontrar (Parceiros Indicados)</h4>", unsafe_allow_html=True)
+        if lojas:
+            st.markdown("<br><h4 style='text-align: center; color: #F39C12;'>🛒 Onde encontrar (Parceiros Indicados)</h4>", unsafe_allow_html=True)
+            cols = st.columns(3)
+            for i, loja in enumerate(lojas):
+                if i < 3: # Garante que não estoure o layout
+                    with cols[i]:
+                        st.markdown(f"""
+                        <a href="{loja['url']}" target="_blank" style="text-decoration: none;">
+                            <div class="store-card">
+                                <div class="store-link">{loja['nome']} ↗</div>
+                                <div class="store-desc">{loja['desc']}</div>
+                            </div>
+                        </a>
+                        """, unsafe_allow_html=True)
+        else:
+            st.warning("Nenhuma loja parceira encontrada para esta categoria.")
+                
+    else:
+        st.error(f"⚠️ Os agentes não encontraram produtos da vibe '{vibe}' abaixo de R$ {orcamento}.")
+
+# Rodapé
+st.markdown("<br><br><p style='text-align: center; color: #444; font-size: 0.8rem;'>Arquitetura: LangGraph StateMachine • Frontend: Streamlit</p>", unsafe_allow_html=True)
