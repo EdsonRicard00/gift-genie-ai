@@ -1,40 +1,59 @@
-# 🎁 GiftGenie AI - Agente de Vendas Autônomo
+# 🎁 GiftGenie AI - Assistente de Compras Agêntico
 
-> **Uma aplicação Full-Stack de Inteligência Artificial que utiliza fluxos agênticos cíclicos (LangGraph) e Psicologia das Cores para otimizar a experiência de compra.**
-
-![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
-![LangGraph](https://img.shields.io/badge/AI-LangGraph-orange)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-red)
-![Status](https://img.shields.io/badge/Status-MVP-green)
+![LangGraph](https://img.shields.io/badge/AI-LangGraph-orange)
+![Status](https://img.shields.io/badge/Status-Deployed-success)
+
+> **O GiftGenie AI é um sistema de recomendação inteligente que utiliza uma arquitetura de agentes autônomos para encontrar o presente ideal e indicar as melhores lojas para compra.**
 
 ---
 
-## 🧠 Sobre o Projeto
+## 🚀 Sobre o Projeto
 
-O **GiftGenie AI** não é apenas um sistema de recomendação. É uma implementação de **Engenharia de Agentes (Agentic Engineering)**.
+Diferente de filtros condicionais simples, este projeto implementa uma **Stateful Architecture** (Arquitetura de Estado) utilizando **LangGraph**. O sistema simula o raciocínio de um consultor de vendas através de um grafo direcionado, onde cada "nó" representa um agente especialista.
 
-Diferente de chatbots lineares tradicionais, este sistema utiliza um **Grafo de Estados (State Graph)** para simular o processo cognitivo de um consultor de vendas humano. O sistema possui capacidade de "autocrítica": ele pesquisa, avalia se a sugestão atende aos requisitos de orçamento/perfil e, se necessário, **rejeita a própria sugestão e refaz a busca** autonomamente antes de apresentar ao usuário.
+### 🧠 Arquitetura dos Agentes (Workflow)
 
-### 🎯 Diferenciais Técnicos & UX
-* **Arquitetura Cíclica (Looping):** Uso de `LangGraph` para criar fluxos de decisão condicionais (Pesquisar -> Criticar -> Decidir -> Repetir/Entregar).
-* **Separação de Responsabilidades:** Arquitetura desacoplada com Lógica de Negócios (`backend_ia.py`) separada da Interface (`app.py`).
-* **UX Design Estratégico:** Interface desenhada com *Color Psychology* para conversão:
-    * 🟠 **Laranja (#FF6F00):** Call-to-Action (CTA) para gerar urgência e entusiasmo.
-    * 🔵 **Navy Blue (#0E1117):** Transmite autoridade e confiança técnica.
-    * ⚪ **White-space:** Redução de carga cognitiva para foco na decisão.
+O fluxo de decisão passa por 3 estágios autônomos:
+
+1.  **🕵️ Agente Pesquisador:** Analisa a base de conhecimento para filtrar produtos baseados na "Vibe" (Perfil Comportamental).
+2.  **💰 Agente Financeiro:** Aplica regras de negócio e restrições orçamentárias sobre os resultados.
+3.  **🛒 Agente de Oportunidades:** Localiza parceiros comerciais (Lojas) confiáveis para a aquisição do produto selecionado.
 
 ---
 
-## 🛠️ Arquitetura do Sistema
+## 🛠️ Tecnologias Utilizadas
 
-O sistema opera com dois agentes autônomos trabalhando em conjunto:
+* **Linguagem:** Python 3
+* **Interface (UI):** Streamlit (com Custom CSS para Dark Mode Premium)
+* **Orquestração de IA:** LangGraph (StateGraph Implementation)
+* **Versionamento:** Git & GitHub
 
-1.  **Agente Pesquisador:** Varre a base de dados (simulada ou via API) buscando produtos baseados em tags de interesse ("vibe").
-2.  **Agente Crítico de Vendas:** Atua como um "guardrail", verificando restrições orçamentárias rígidas. Se o produto ultrapassa o budget, ele aciona o gatilho de *retry* no grafo.
+---
 
-```mermaid
-graph LR
-    A[Início] --> B(Agente Pesquisador);
-    B --> C{Agente Crítico};
-    C -- Aprovado --> D[Entrega ao Cliente];
-    C -- Reprovado (Preço Alto) --> B;
+## 🎨 Funcionalidades
+
+* **Interface Intuitiva:** Design moderno com feedback visual imediato.
+* **Sistema de "Vibe":** Categorização por perfis (Geek, Esporte, Fashion, Minimalista).
+* **Feedback Visual:** Cards interativos com detalhes do produto.
+* **Integração com E-commerce:** Sugestão direta de links para compra (Amazon, Netshoes, etc).
+
+---
+
+## 📦 Como Rodar Localmente
+
+Siga os passos abaixo para testar o projeto na sua máquina:
+
+```bash
+# 1. Clone o repositório
+git clone [https://github.com/SEU-USUARIO/NOME-DO-REPO.git](https://github.com/SEU-USUARIO/NOME-DO-REPO.git)
+
+# 2. Entre na pasta
+cd NOME-DO-REPO
+
+# 3. Instale as dependências
+pip install -r requirements.txt
+
+# 4. Execute a aplicação
+streamlit run app.py
