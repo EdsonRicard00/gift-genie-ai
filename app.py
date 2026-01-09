@@ -210,7 +210,7 @@ with st.container():
     # Menu atualizado com todas as opções
     vibe = st.selectbox(
         "✨ Vibe Principal", 
-        ["esporte", "geek", "fashion", "minimalista", "tech_home_office", "coffee_lover", "pet_lover"]
+        ["esporte", "geek", "fashion", "minimalista", "HOME OFFICE", "coffee lover", "Pet lover"]
     )
 
 st.write("") 
