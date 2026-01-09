@@ -10,12 +10,18 @@ st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered
 st.markdown("""
 <style>
     .stApp { background-color: #0E1117; font-family: 'Helvetica Neue', sans-serif; }
+    /* NOVO TÍTULO LILÁS REVOLUCIONÁRIO */
     h1 {
-        background: -webkit-linear-gradient(45deg, #F39C12, #FFD700);
+        /* Gradiente futurista de Roxo Neon para Magenta */
+        background: linear-gradient(to right, #9D50BB, #FF00FF);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700 !important; font-size: 3rem !important;
-        text-align: center; padding-bottom: 20px;
+        font-weight: 800 !important;
+        font-size: 3.5rem !important; /* Aumentei um pouco para mais impacto */
+        text-align: center;
+        padding-bottom: 10px;
+        letter-spacing: 2px; /* Espaçamento mais moderno */
+        text-shadow: 0px 0px 15px rgba(157, 80, 187, 0.5); /* Efeito de brilho neon */
     }
     div.stButton > button {
         width: 100%; background: linear-gradient(90deg, #F39C12 0%, #D35400 100%);
@@ -195,7 +201,19 @@ workflow.add_edge("loja_finder", END)
 app_ia = workflow.compile()
 
 # --- INTERFACE VISUAL ---
+# --- INTERFACE VISUAL ---
+# Título Principal com o novo estilo Lilás definido no CSS acima
 st.markdown("<h1>GiftGenie AI</h1>", unsafe_allow_html=True)
+
+# --- NOVO BLOCO DE TEXTO EMOCIONAL (REVOLUCIONÁRIO) ---
+st.markdown("""
+<p style='text-align: center; color: #C0C0C0; font-size: 1.1rem; line-height: 1.6; font-style: italic; max-width: 800px; margin: -15px auto 30px auto;'>
+    "Sabe aquela ansiedade de navegar por horas e terminar com a dúvida: 'será que a pessoa vai gostar?'? A dificuldade de traduzir afeto em um presente físico é real e cansativa. O GiftGenie AI nasceu exatamente para resolver esse bloqueio criativo. A ideia não é apenas sugerir produtos, mas usar a tecnologia para entender perfis e conectar você às lojas certas, transformando a indecisão em um gesto certeiro."
+</p>
+""", unsafe_allow_html=True)
+# -------------------------------------------------------
+
+st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 
 with st.container():
