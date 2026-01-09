@@ -8,21 +8,21 @@ st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered
 
 # --- ESTILIZAÇÃO AVANÇADA (CSS) ---
 st.markdown("""
-<style>
-    .stApp { background-color: #0E1117; font-family: 'Helvetica Neue', sans-serif; }
-    /* NOVO TÍTULO LILÁS REVOLUCIONÁRIO */
+/* TÍTULO RESTAURADO: OURO E FOGO (ALTO CONTRASTE) */
     h1 {
-        /* Gradiente futurista de Roxo Neon para Magenta */
-        background: linear-gradient(to right, #9D50BB, #FF00FF);
+        /* Gradiente original Laranja para Dourado */
+        background: -webkit-linear-gradient(45deg, #F39C12, #FFD700);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        /* Configurações de impacto */
         font-weight: 800 !important;
-        font-size: 3.5rem !important; /* Aumentei um pouco para mais impacto */
+        font-size: 3.5rem !important;
         text-align: center;
         padding-bottom: 10px;
-        letter-spacing: 2px; /* Espaçamento mais moderno */
-        text-shadow: 0px 0px 15px rgba(157, 80, 187, 0.5); /* Efeito de brilho neon */
+        /* Adicionei um brilho laranja para destacar ainda mais */
+        text-shadow: 0px 0px 15px rgba(243, 156, 18, 0.4);
     }
+
     div.stButton > button {
         width: 100%; background: linear-gradient(90deg, #F39C12 0%, #D35400 100%);
         color: white; border: none; padding: 15px 32px;
@@ -50,28 +50,6 @@ st.markdown("""
     .store-desc { font-size: 0.8rem; color: #aaa; margin-top: 5px; }
 </style>
 """, unsafe_allow_html=True)
-
-# --- DADOS (CONHECIMENTO DO SISTEMA) ---
-banco_de_presentes = {
-    "esporte": [
-        {"item": "Garrafa Térmica Premium", "preco": 45, "desc": "Hidratação com tecnologia térmica."},
-        {"item": "Kit Elásticos Extensores", "preco": 30, "desc": "Academia completa em casa."},
-        {"item": "Luva de Treino Pro", "preco": 55, "desc": "Proteção para cargas altas."}
-    ],
-    "geek": [
-        {"item": "Funko Pop (Edição Especial)", "preco": 80, "desc": "Item de colecionador raro."},
-        {"item": "Caneca 3D Star Wars", "preco": 40, "desc": "Detalhes fieis da saga."},
-        {"item": "Luminária Pixel LED", "preco": 45, "desc": "Decoração gamer retrô."}
-    ],
-    "fashion": [
-        {"item": "Óculos Retro UV400", "preco": 50, "desc": "Estilo vintage com proteção."},
-        {"item": "Pulseira Couro Minimalista", "preco": 35, "desc": "Acessório coringa."}
-    ],
-    "minimalista": [
-        {"item": "Vela Aromática Bamboo", "preco": 35, "desc": "Relaxamento e aroma suave."},
-        {"item": "Planner Executivo", "preco": 25, "desc": "Organização com elegância."}
-    ]
-}
 
 # --- DADOS (O ESTOQUE DO E-COMMERCE) ---
 banco_de_presentes = {
@@ -102,19 +80,19 @@ banco_de_presentes = {
         {"item": "Vaso de Cimento Geométrico", "preco": 40, "desc": "Design industrial para plantas pequenas."},
         {"item": "Organizador de Cabos", "preco": 20, "desc": "Fim da bagunça na mesa de trabalho."}
     ],
-    "tech_home_office": [ # NOVA CATEGORIA
+    "tech_home_office": [
         {"item": "Suporte Notebook Ergonômico", "preco": 50, "desc": "Corrige a postura e resfria o computador."},
         {"item": "Ring Light de Mesa", "preco": 45, "desc": "Iluminação profissional para videochamadas."},
         {"item": "Hub USB 4 Portas", "preco": 35, "desc": "Mais conexões para quem tem muitos gadgets."},
         {"item": "Apoio de Pulso em Gel", "preco": 25, "desc": "Conforto para longas horas digitando."}
     ],
-    "coffee_lover": [ # NOVA CATEGORIA
+    "coffee_lover": [
         {"item": "Prensa Francesa 350ml", "preco": 60, "desc": "O método clássico para um café encorpado."},
         {"item": "Copo Térmico Coffee To Go", "preco": 40, "desc": "Seu café quente até chegar no trabalho."},
         {"item": "Moedor de Grãos Manual", "preco": 90, "desc": "O cheiro de café moído na hora é impagável."},
         {"item": "Kit Mini Xícaras Parede Dupla", "preco": 55, "desc": "Design moderno que não queima a mão."}
     ],
-    "pet_lover": [ # NOVA CATEGORIA
+    "pet_lover": [
         {"item": "Brinquedo Interativo Kong", "preco": 45, "desc": "Mantém o pet entretido por horas."},
         {"item": "Bandana Personalizada", "preco": 20, "desc": "Estilo imediato para o passeio."},
         {"item": "Comedouro Lento", "preco": 35, "desc": "Saúde digestiva e diversão para o animal."},
@@ -201,6 +179,8 @@ workflow.add_edge("loja_finder", END)
 app_ia = workflow.compile()
 
 # --- INTERFACE VISUAL ---
+st.markdown("<h1>GiftGenie AI</h1>", unsafe_allow_html=True)
+
 # --- NOVO BLOCO DE TEXTO EMOCIONAL (BRILHO BRANCO) ---
 st.markdown("""
 <p style='
@@ -217,7 +197,6 @@ st.markdown("""
     "Sabe aquela ansiedade de navegar por horas e terminar com a dúvida: 'será que a pessoa vai gostar?'? A dificuldade de traduzir afeto em um presente físico é real e cansativa. O GiftGenie AI nasceu exatamente para resolver esse bloqueio criativo. A ideia não é apenas sugerir produtos, mas usar a tecnologia para entender perfis e conectar você às lojas certas, transformando a indecisão em um gesto certeiro."
 </p>
 """, unsafe_allow_html=True)
-# -------------------------------------------------------
 
 st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 
@@ -227,6 +206,8 @@ with st.container():
         destinatario = st.selectbox("🎯 Destinatário", ["Namorado(a)", "Mãe", "Pai", "Amigo"])
     with col2:
         orcamento = st.number_input("💰 Orçamento (R$)", min_value=10, value=50, step=5)
+    
+    # Menu atualizado com todas as opções
     vibe = st.selectbox(
         "✨ Vibe Principal", 
         ["esporte", "geek", "fashion", "minimalista", "tech_home_office", "coffee_lover", "pet_lover"]
@@ -241,7 +222,6 @@ if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
         resultado_estado = app_ia.invoke(inputs)
         
         presente = resultado_estado.get("decisao_final")
-        # Correção aqui: Adicionei um valor padrão ([]) para evitar erro se vier vazio
         lojas = resultado_estado.get("lojas_recomendadas", [])
     
     if presente:
@@ -261,7 +241,7 @@ if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
             st.markdown("<br><h4 style='text-align: center; color: #F39C12;'>🛒 Onde encontrar (Parceiros Indicados)</h4>", unsafe_allow_html=True)
             cols = st.columns(3)
             for i, loja in enumerate(lojas):
-                if i < 3: # Garante que não estoure o layout
+                if i < 3: 
                     with cols[i]:
                         st.markdown(f"""
                         <a href="{loja['url']}" target="_blank" style="text-decoration: none;">
