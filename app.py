@@ -8,18 +8,18 @@ st.set_page_config(page_title="GiftGenie AI", page_icon="🎁", layout="centered
 
 # --- ESTILIZAÇÃO AVANÇADA (CSS) ---
 st.markdown("""
-/* TÍTULO RESTAURADO: OURO E FOGO (ALTO CONTRASTE) */
+<style>
+    .stApp { background-color: #0E1117; font-family: 'Helvetica Neue', sans-serif; }
+    
+    /* TÍTULO RESTAURADO: OURO E FOGO (ALTO CONTRASTE) */
     h1 {
-        /* Gradiente original Laranja para Dourado */
         background: -webkit-linear-gradient(45deg, #F39C12, #FFD700);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        /* Configurações de impacto */
         font-weight: 800 !important;
         font-size: 3.5rem !important;
         text-align: center;
         padding-bottom: 10px;
-        /* Adicionei um brilho laranja para destacar ainda mais */
         text-shadow: 0px 0px 15px rgba(243, 156, 18, 0.4);
     }
 
