@@ -254,5 +254,15 @@ if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
     else:
         st.error(f"⚠️ Os agentes não encontraram produtos da vibe '{vibe}' abaixo de R$ {orcamento}.")
 
-# Rodapé
-st.markdown("<br><br><p style='text-align: center; color: #444; font-size: 0.8rem;'>Arquitetura: LangGraph StateMachine • Frontend: Streamlit</p>", unsafe_allow_html=True)
+# --- RODAPÉ COM ASSINATURA ---
+st.markdown("""
+<br><br>
+<p style='text-align: center; color: #666; font-size: 0.8rem;'>
+    Desenvolvido por <b>Edson Ricardo </b> 🚀<br>
+    <a href="https://www.linkedin.com/in/edson-ricardo-495294220?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" style="color: #F39C12; text-decoration: none; font-weight: bold;">
+        Conecte-se comigo no LinkedIn 🔗
+    </a>
+    <br><br>
+    <span style='color: #444;'>Arquitetura: LangGraph StateMachine • Frontend: Streamlit</span>
+</p>
+""", unsafe_allow_html=True)
