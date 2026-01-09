@@ -201,19 +201,24 @@ workflow.add_edge("loja_finder", END)
 app_ia = workflow.compile()
 
 # --- INTERFACE VISUAL ---
-# --- INTERFACE VISUAL ---
-# Título Principal com o novo estilo Lilás definido no CSS acima
-st.markdown("<h1>GiftGenie AI</h1>", unsafe_allow_html=True)
-
-# --- NOVO BLOCO DE TEXTO EMOCIONAL (REVOLUCIONÁRIO) ---
+# --- NOVO BLOCO DE TEXTO EMOCIONAL (BRILHO BRANCO) ---
 st.markdown("""
-<p style='text-align: center; color: #C0C0C0; font-size: 1.1rem; line-height: 1.6; font-style: italic; max-width: 800px; margin: -15px auto 30px auto;'>
+<p style='
+    text-align: center; 
+    color: #FFFFFF; /* Branco Puro */
+    font-size: 1.1rem; 
+    line-height: 1.6; 
+    font-style: italic; 
+    max-width: 800px; 
+    margin: -10px auto 30px auto;
+    text-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6); /* O Segredo do Brilho */
+    opacity: 0.9;
+'>
     "Sabe aquela ansiedade de navegar por horas e terminar com a dúvida: 'será que a pessoa vai gostar?'? A dificuldade de traduzir afeto em um presente físico é real e cansativa. O GiftGenie AI nasceu exatamente para resolver esse bloqueio criativo. A ideia não é apenas sugerir produtos, mas usar a tecnologia para entender perfis e conectar você às lojas certas, transformando a indecisão em um gesto certeiro."
 </p>
 """, unsafe_allow_html=True)
 # -------------------------------------------------------
 
-st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #aaa;'>Powered by <b>LangGraph</b> Agentes</p>", unsafe_allow_html=True)
 
 with st.container():
