@@ -254,15 +254,28 @@ if st.button("ATIVAR AGENTES DE BUSCA 🚀"):
     else:
         st.error(f"⚠️ Os agentes não encontraram produtos da vibe '{vibe}' abaixo de R$ {orcamento}.")
 
-# --- RODAPÉ COM ASSINATURA ---
+# --- RODAPÉ COM ASSINATURA E CONTATOS ---
 st.markdown("""
 <br><br>
-<p style='text-align: center; color: #666; font-size: 0.8rem;'>
-    Desenvolvido por <b>Edson Ricardo </b> 🚀<br>
-    <a href="https://www.linkedin.com/in/edson-ricardo-495294220?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" style="color: #F39C12; text-decoration: none; font-weight: bold;">
-        Conecte-se comigo no LinkedIn 🔗
-    </a>
-    <br><br>
+<div style='text-align: center; color: #666; font-size: 0.8rem;'>
+    <p style='margin-bottom: 15px;'>Desenvolvido por <b>[SEU NOME AQUI]</b> 🚀</p>
+    
+    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+        <a href="https://www.linkedin.com/in/edson-ricardo-495294220?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" style="
+            background-color: #0e76a8; color: white; padding: 8px 16px; 
+            border-radius: 20px; text-decoration: none; font-weight: bold; 
+            transition: all 0.3s;">
+            LinkedIn 🔗
+        </a>
+        
+        <a href="https://wa.me/5511987302923?text=Ol%C3%A1!%20Vi%20seu%20projeto%20GiftGenie%20e%20gostaria%20de%20conversar." target="_blank" style="
+            background-color: #25D366; color: white; padding: 8px 16px; 
+            border-radius: 20px; text-decoration: none; font-weight: bold; 
+            transition: all 0.3s;">
+            WhatsApp 💬
+        </a>
+    </div>
+
     <span style='color: #444;'>Arquitetura: LangGraph StateMachine • Frontend: Streamlit</span>
-</p>
+</div>
 """, unsafe_allow_html=True)
