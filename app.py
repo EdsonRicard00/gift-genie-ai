@@ -67,27 +67,91 @@ banco_de_presentes = {
     ]
 }
 
-# Banco de Lojas
-banco_de_lojas = {
+# --- DADOS (O ESTOQUE DO E-COMMERCE) ---
+banco_de_presentes = {
     "esporte": [
-        {"nome": "Netshoes", "url": "https://www.netshoes.com.br", "desc": "Maior e-commerce esportivo"},
-        {"nome": "Decathlon", "url": "https://www.decathlon.com.br", "desc": "Tudo para 65 esportes"},
-        {"nome": "Centauro", "url": "https://www.centauro.com.br", "desc": "Rede tradicional de esportes"}
+        {"item": "Garrafa Térmica Premium", "preco": 45, "desc": "Hidratação com tecnologia térmica dupla camada."},
+        {"item": "Kit Elásticos Extensores", "preco": 30, "desc": "Academia completa que cabe na mochila."},
+        {"item": "Luva de Treino Pro", "preco": 55, "desc": "Proteção para cargas altas e calos."},
+        {"item": "Smartband Simples", "preco": 90, "desc": "Monitoramento de passos e sono básico."},
+        {"item": "Corda de Pular Rolamentada", "preco": 40, "desc": "Alta velocidade para queimar calorias."}
     ],
     "geek": [
-        {"nome": "Nerdstore", "url": "https://nerdstore.com.br", "desc": "A maior loja nerd do Brasil"},
-        {"nome": "Piticas", "url": "https://www.piticas.com.br", "desc": "Camisetas e colecionáveis"},
-        {"nome": "Amazon Geek", "url": "https://www.amazon.com.br/geek", "desc": "Presentes rápidos"}
+        {"item": "Funko Pop (Edição Especial)", "preco": 80, "desc": "Item de colecionador que valoriza com o tempo."},
+        {"item": "Caneca 3D Star Wars", "preco": 40, "desc": "Detalhes fieis da saga para o café da manhã."},
+        {"item": "Luminária Pixel LED", "preco": 45, "desc": "Iluminação ambiente estilo 8-bits."},
+        {"item": "Camiseta Algodão Egípcio Nerd", "preco": 60, "desc": "Conforto premium com estampa de cultura pop."},
+        {"item": "Mousepad Gamer Extra Grande", "preco": 70, "desc": "Cobre a mesa toda, melhora a precisão."}
     ],
     "fashion": [
-        {"nome": "Zattini", "url": "https://www.zattini.com.br", "desc": "Moda e lifestyle"},
-        {"nome": "Dafiti", "url": "https://www.dafiti.com.br", "desc": "Marcas famosas"},
-        {"nome": "Amaro", "url": "https://amaro.com", "desc": "Moda estilosa"}
+        {"item": "Óculos Retro UV400", "preco": 50, "desc": "Estilo vintage com proteção solar real."},
+        {"item": "Pulseira Couro Minimalista", "preco": 35, "desc": "Acessório coringa para qualquer look."},
+        {"item": "Bag Transversal Street", "preco": 85, "desc": "Praticidade e estilo urbano."},
+        {"item": "Boné Dad Hat", "preco": 45, "desc": "Tendência casual e despojada."},
+        {"item": "Kit Meias Estampadas", "preco": 30, "desc": "Um toque de cor e personalidade discreta."}
     ],
     "minimalista": [
-        {"nome": "Tok&Stok", "url": "https://www.tokstok.com.br", "desc": "Design clean"},
-        {"nome": "Camicado", "url": "https://www.camicado.com.br", "desc": "Casa e organização"},
-        {"nome": "MinD", "url": "https://www.casamind.com.br", "desc": "Design original"}
+        {"item": "Vela Aromática Bamboo", "preco": 35, "desc": "Relaxamento e aroma suave para o ambiente."},
+        {"item": "Planner Executivo Sem Pauta", "preco": 25, "desc": "Liberdade total para organizar ideias."},
+        {"item": "Vaso de Cimento Geométrico", "preco": 40, "desc": "Design industrial para plantas pequenas."},
+        {"item": "Organizador de Cabos", "preco": 20, "desc": "Fim da bagunça na mesa de trabalho."}
+    ],
+    "tech_home_office": [ # NOVA CATEGORIA
+        {"item": "Suporte Notebook Ergonômico", "preco": 50, "desc": "Corrige a postura e resfria o computador."},
+        {"item": "Ring Light de Mesa", "preco": 45, "desc": "Iluminação profissional para videochamadas."},
+        {"item": "Hub USB 4 Portas", "preco": 35, "desc": "Mais conexões para quem tem muitos gadgets."},
+        {"item": "Apoio de Pulso em Gel", "preco": 25, "desc": "Conforto para longas horas digitando."}
+    ],
+    "coffee_lover": [ # NOVA CATEGORIA
+        {"item": "Prensa Francesa 350ml", "preco": 60, "desc": "O método clássico para um café encorpado."},
+        {"item": "Copo Térmico Coffee To Go", "preco": 40, "desc": "Seu café quente até chegar no trabalho."},
+        {"item": "Moedor de Grãos Manual", "preco": 90, "desc": "O cheiro de café moído na hora é impagável."},
+        {"item": "Kit Mini Xícaras Parede Dupla", "preco": 55, "desc": "Design moderno que não queima a mão."}
+    ],
+    "pet_lover": [ # NOVA CATEGORIA
+        {"item": "Brinquedo Interativo Kong", "preco": 45, "desc": "Mantém o pet entretido por horas."},
+        {"item": "Bandana Personalizada", "preco": 20, "desc": "Estilo imediato para o passeio."},
+        {"item": "Comedouro Lento", "preco": 35, "desc": "Saúde digestiva e diversão para o animal."},
+        {"item": "Escova Tira Pelos", "preco": 30, "desc": "Casa limpa e pet massageado."}
+    ]
+}
+
+# --- ATUALIZAÇÃO DAS LOJAS (PARCEIROS) ---
+banco_de_lojas = {
+    "esporte": [
+        {"nome": "Netshoes", "url": "https://www.netshoes.com.br", "desc": "Líder em artigos esportivos"},
+        {"nome": "Decathlon", "url": "https://www.decathlon.com.br", "desc": "A maior variedade técnica"},
+        {"nome": "Nike Outlet", "url": "https://www.nike.com.br", "desc": "Qualidade indiscutível"}
+    ],
+    "geek": [
+        {"nome": "Amazon Geek", "url": "https://www.amazon.com.br/geek", "desc": "Entrega mais rápida do Brasil"},
+        {"nome": "Nerdstore", "url": "https://nerdstore.com.br", "desc": "De fã para fã"},
+        {"nome": "Piticas", "url": "https://www.piticas.com.br", "desc": "Vestuário oficial"}
+    ],
+    "fashion": [
+        {"nome": "Dafiti", "url": "https://www.dafiti.com.br", "desc": "Moda inteligente"},
+        {"nome": "Amaro", "url": "https://amaro.com", "desc": "Tendências digitais"},
+        {"nome": "Renner", "url": "https://www.lojasrenner.com.br", "desc": "Estilo para todos"}
+    ],
+    "minimalista": [
+        {"nome": "Tok&Stok", "url": "https://www.tokstok.com.br", "desc": "Design assinado"},
+        {"nome": "MinD", "url": "https://www.casamind.com.br", "desc": "Decoração com propósito"},
+        {"nome": "Camicado", "url": "https://www.camicado.com.br", "desc": "Casa completa"}
+    ],
+    "tech_home_office": [
+        {"nome": "Kabum!", "url": "https://www.kabum.com.br", "desc": "Hardware e periféricos"},
+        {"nome": "Amazon Eletrônicos", "url": "https://amazon.com.br", "desc": "Tecnologia acessível"},
+        {"nome": "Kalunga", "url": "https://www.kalunga.com.br", "desc": "Tudo para escritório"}
+    ],
+    "coffee_lover": [
+        {"nome": "Coffee Mais", "url": "https://coffeemais.com", "desc": "Cafés especiais"},
+        {"nome": "Amazon Cozinha", "url": "https://amazon.com.br", "desc": "Utensílios baristas"},
+        {"nome": "Starbucks At Home", "url": "https://www.starbucksathome.com", "desc": "A experiência da cafeteria"}
+    ],
+    "pet_lover": [
+        {"nome": "Petz", "url": "https://www.petz.com.br", "desc": "O shopping do seu pet"},
+        {"nome": "Cobasi", "url": "https://www.cobasi.com.br", "desc": "Essencial para a vida"},
+        {"nome": "Petlove", "url": "https://www.petlove.com.br", "desc": "Assinaturas e mimos"}
     ]
 }
 
@@ -140,7 +204,10 @@ with st.container():
         destinatario = st.selectbox("🎯 Destinatário", ["Namorado(a)", "Mãe", "Pai", "Amigo"])
     with col2:
         orcamento = st.number_input("💰 Orçamento (R$)", min_value=10, value=50, step=5)
-    vibe = st.selectbox("✨ Vibe Principal", ["esporte", "geek", "fashion", "minimalista"])
+    vibe = st.selectbox(
+        "✨ Vibe Principal", 
+        ["esporte", "geek", "fashion", "minimalista", "tech_home_office", "coffee_lover", "pet_lover"]
+    )
 
 st.write("") 
 
